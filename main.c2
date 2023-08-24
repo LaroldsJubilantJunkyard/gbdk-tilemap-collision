@@ -1,0 +1,71 @@
+#include <gb/gb.h>
+#include <gb/cgb.h>
+#include <stdint.h>
+#include <gb/metasprites.h>
+#include "tileset.h"
+#include "tilemap.h"
+#include "ball.h"
+
+
+#define GRID_NODE_SIZE 8
+#define TILEMAP_WIDTH 25
+#define NUMBER_OF_SOLID_TILES 9
+
+uint8_t playerX,playerY;
+
+
+
+void main(void)
+{
+
+    playerX=80;
+    playerY=80;
+
+    // Loop forever
+    while(1) {
+
+        // handle joypadInput
+        uint8_t joypadCurrent = joypad();
+
+        uint16_t newPlayerX = playerX, newPlayerY=playerY;
+
+        if(joypadCurrent & J_RIGHT)newPlayerX++;
+        if(joypadCurrent & J_LEFT)newPlayerX--;
+        if(joypadCurrent & J_DOWN)newPlayerY++;
+        if(joypadCurrent & J_UP)newPlayerY--;
+
+        // Bit-shifting would be faster here
+        uint16_t column = newPlayerX/GRID_NODE_SIZE; 
+        uint16_t row = newPlayerY/GRID_NODE_SIZE;
+        uint16_t tilemapIndex  = column+row*TILEMAP_WIDTH;
+
+        uint8_t tileIsSolid = FALSE;
+
+        // Make sure the tile is in proper bounds
+        if(column>=MyTilemap_width)tileIsSolid=TRUE;
+        else if(row>=MyTilemap_height)tileIsSolid=TRUE;
+        else if(tilemapIndex>+MyTilemap_TILE_COUNT)tileIsSolid=TRUE;
+        else{
+
+            // Get the tilset tile in our tilemap
+            uint8_t tilesetTile = MyTilemap_map[tilemapIndex];
+
+            // In our tileset, the solid tiles always come first.
+            // this makes it fast & easy to determine if a tile is solid or not
+            tileIsSolid = tilesetTile<NUMBER_OF_SOLID_TILES;
+
+        }
+
+        // The next tile isn't solid
+        if(!tileIsSolid){
+
+            // Update the player's position
+            playerX=newPlayerX;
+            playerY=newPlayerY;
+        }
+
+
+		// Done processing, yield CPU and wait for start of next frame
+        wait_vbl_done();
+    }
+}
