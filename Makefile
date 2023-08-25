@@ -16,10 +16,10 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 PROJECTNAME    = TilmapCollision
 
 BINS	    = $(PROJECTNAME).gb
-CSOURCES   := $(wildcard *.c)
-ASMSOURCES := $(wildcard *.s)
+BINS2	    = $(PROJECTNAME)_SinglePoint.gb
+CSOURCES   := tilemap.c tileset.c ball.c
 
-all:	png2asset $(BINS)
+all:	png2asset $(BINS) $(BINS2)
 
 png2asset:
 	$(PNG2ASSET) tilemap.png -map -source_tileset tileset.png -noflip -keep_palette_order
@@ -31,8 +31,12 @@ compile.bat: Makefile
 	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
 
 # Compile and link all source files in a single call to LCC
-$(BINS):	$(CSOURCES) $(ASMSOURCES)
-	$(LCC) -o $@ $(CSOURCES) $(ASMSOURCES)
+$(BINS):	main.c $(CSOURCES)
+	$(LCC) -o $@ main.c $(CSOURCES)
+
+# Compile and link all source files in a single call to LCC
+$(BINS2):	main_singlepoint.c $(CSOURCES)
+	$(LCC) -o $@ main_singlepoint.c $(CSOURCES)
 
 clean:
 	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm
