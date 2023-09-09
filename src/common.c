@@ -21,54 +21,55 @@ uint8_t WorldPositionIsSolid(uint16_t x, uint16_t y){
     
     // Bit-shifting would be faster here
     uint16_t column = x/GRID_NODE_SIZE; 
+
+    // Make sure the tile is in proper bounds
+    if(column>=TILEMAP_WIDTH_IN_TILES)return TRUE;
+
     uint16_t row = y/GRID_NODE_SIZE;
+
+    // Make sure the tile is in proper bounds
+    if(row>=TILEMAP_HEIGHT_IN_TILES)return TRUE;
+    
     uint16_t tilemapIndex  = column+row*TILEMAP_WIDTH_IN_TILES;
 
     uint8_t tileIsSolid = FALSE;
 
-    // Make sure the tile is in proper bounds
-    if(column>=TILEMAP_WIDTH_IN_TILES)tileIsSolid=TRUE;
-    else if(row>=TILEMAP_HEIGHT_IN_TILES)tileIsSolid=TRUE;
-    else{
+    // Get the tilset tile in our tilemap
+    uint8_t tilesetTile = tilemap_map[tilemapIndex];
 
-        // Get the tilset tile in our tilemap
-        uint8_t tilesetTile = tilemap_map[tilemapIndex];
-
-        // In our tileset, the solid tiles always come first.
-        // There are 10 tiles. The first 9 are solid
-        // this makes it fast & easy to determine if a tile is solid or not
-        tileIsSolid = tilesetTile<NUMBER_OF_SOLID_TILES;
-
-    }
+    // In our tileset, the solid tiles always come first.
+    // There are 10 tiles. The first 9 are solid
+    // this makes it fast & easy to determine if a tile is solid or not
+    tileIsSolid = tilesetTile<NUMBER_OF_SOLID_TILES;
 
     return  tileIsSolid;
 
 }
 
-void GetPlayerInput(uint16_t* newPlayerX,uint16_t* newPlayerY,int8_t* directionX, int8_t* directionY){
+void GetPlayerInput(uint16_t* nextPlayerX,uint16_t* nextPlayerY,int8_t* directionX, int8_t* directionY){
     
     // handle joypadInput
     uint8_t joypadCurrent = joypad();
 
-    *newPlayerX = playerX;
-    *newPlayerY = playerY;
+    *nextPlayerX = playerX;
+    *nextPlayerY = playerY;
     *directionY=0;
     *directionX=0;
 
     if(joypadCurrent & J_RIGHT){
-        *newPlayerX+=1;
+        *nextPlayerX+=1;
         *directionX=1;
     }
     if(joypadCurrent & J_LEFT){
-        *newPlayerX-=1;
+        *nextPlayerX-=1;
         *directionX=-1;
     }
     if(joypadCurrent & J_DOWN){
-        *newPlayerY+=1;
+        *nextPlayerY+=1;
         *directionY=1;
     }
     if(joypadCurrent & J_UP){
-        *newPlayerY-=1;
+        *nextPlayerY-=1;
         *directionY=-1;
     }
 }

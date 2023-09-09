@@ -10,4 +10,4 @@ extern uint16_t playerX,playerY;
 
 void SetupDemo();
 uint8_t WorldPositionIsSolid(uint16_t x, uint16_t y);
-void GetPlayerInput(uint16_t* newPlayerX,uint16_t* newPlayerY,int8_t* directionX, int8_t* directionY);
+void GetPlayerInput(uint16_t* nextPlayerX,uint16_t* nextPlayerY,int8_t* directionX, int8_t* directionY);

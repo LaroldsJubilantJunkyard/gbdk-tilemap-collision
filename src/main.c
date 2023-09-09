@@ -14,10 +14,10 @@ void main(void)
     // Loop forever
     while(1) {
 
-        uint16_t newPlayerX = playerX, newPlayerY=playerY;
+        uint16_t nextPlayerX = playerX, nextPlayerY=playerY;
         int8_t directionY=0,directionX=0;
 
-        GetPlayerInput(&newPlayerX,&newPlayerY,&directionX,&directionY);
+        GetPlayerInput(&nextPlayerX,&nextPlayerY,&directionX,&directionY);
 
 
         uint8_t playerIsMoving = directionX!=0||directionY!=0;
@@ -32,15 +32,15 @@ void main(void)
 
                 // Check the tiles on our side
                 uint8_t solid =
-                    WorldPositionIsSolid(newPlayerX+directionX*PLAYER_HALF_WIDTH,playerY-PLAYER_HALF_HEIGHT)||
-                    WorldPositionIsSolid(newPlayerX+directionX*PLAYER_HALF_WIDTH,playerY)||
-                    WorldPositionIsSolid(newPlayerX+directionX*PLAYER_HALF_WIDTH,playerY+PLAYER_HALF_HEIGHT);
+                    WorldPositionIsSolid(nextPlayerX+directionX*PLAYER_HALF_WIDTH,playerY-PLAYER_HALF_HEIGHT)||
+                    WorldPositionIsSolid(nextPlayerX+directionX*PLAYER_HALF_WIDTH,playerY)||
+                    WorldPositionIsSolid(nextPlayerX+directionX*PLAYER_HALF_WIDTH,playerY+PLAYER_HALF_HEIGHT);
 
                 // If none are solid
                 if(!solid){
                     
                     // Update the player's x position
-                    playerX=newPlayerX;
+                    playerX=nextPlayerX;
                 }
             }
 
@@ -49,15 +49,15 @@ void main(void)
 
                 // Check the tiles above or below us
                 uint8_t solid =
-                    WorldPositionIsSolid(playerX+PLAYER_HALF_WIDTH,newPlayerY+directionY*PLAYER_HALF_HEIGHT)||
-                    WorldPositionIsSolid(playerX,newPlayerY+directionY*PLAYER_HALF_HEIGHT)||
-                    WorldPositionIsSolid(playerX-PLAYER_HALF_WIDTH,newPlayerY+directionY*PLAYER_HALF_HEIGHT);
+                    WorldPositionIsSolid(playerX+PLAYER_HALF_WIDTH,nextPlayerY+directionY*PLAYER_HALF_HEIGHT)||
+                    WorldPositionIsSolid(playerX,nextPlayerY+directionY*PLAYER_HALF_HEIGHT)||
+                    WorldPositionIsSolid(playerX-PLAYER_HALF_WIDTH,nextPlayerY+directionY*PLAYER_HALF_HEIGHT);
 
                 // If none are solid
                 if(!solid){
                     
                     // Update the player's y position
-                    playerY=newPlayerY;
+                    playerY=nextPlayerY;
                 }
             }
 

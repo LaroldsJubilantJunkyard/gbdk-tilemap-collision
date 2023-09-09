@@ -12,13 +12,10 @@ void main(void)
     // Loop forever
     while(1) {
 
-        // handle joypadInput
-        uint8_t joypadCurrent = joypad();
-
-        uint16_t newPlayerX = playerX, newPlayerY=playerY;
+        uint16_t nextPlayerX = playerX, nextPlayerY=playerY;
         int8_t directionY=0,directionX=0;
 
-        GetPlayerInput(&newPlayerX,&newPlayerY,&directionX,&directionY);
+        GetPlayerInput(&nextPlayerX,&nextPlayerY,&directionX,&directionY);
 
         uint8_t playerIsMoving = directionX!=0||directionY!=0;
 
@@ -32,10 +29,10 @@ void main(void)
 
                 // Check the tile on the next location
                 // If none are solid
-                if(!WorldPositionIsSolid(newPlayerX,playerY)){
+                if(!WorldPositionIsSolid(nextPlayerX,playerY)){
                     
                     // Update the player's x position
-                    playerX=newPlayerX;
+                    playerX=nextPlayerX;
                 }
             }
 
@@ -44,10 +41,10 @@ void main(void)
 
                 // Check the tile on the next location
                 // If none are solid
-                if(!WorldPositionIsSolid(playerX,newPlayerY)){
+                if(!WorldPositionIsSolid(playerX,nextPlayerY)){
                     
                     // Update the player's y position
-                    playerY=newPlayerY;
+                    playerY=nextPlayerY;
                 }
             }
 
