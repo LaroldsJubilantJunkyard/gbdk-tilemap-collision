@@ -1,5 +1,7 @@
 # GBDK Tilemap Collision
 
+![GBDK Tilemap Collision](/res/TilmapCollision.png "Tilemap Collision")
+
 This repo contains the source code for the my Tilemap Collision tutorial.
 
 You can find a written version [here](https://laroldsjubilantjunkyard.com/tutorial/tilemap-collision-detection-in-game-boy-games/).
